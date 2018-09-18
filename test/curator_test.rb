@@ -349,4 +349,45 @@ class CuratorTest < Minitest::Test
     assert_equal(expected, actual)
   end
 
+  def test_it_can_load_photos_from_file
+    curator = Curator.new
+    curator.load_photographs('./data/photographs.csv')
+    expected = 4
+    actual = curator.photographs.length
+    assert_equal(expected, actual)
+    curator.photographs.each do |photo|
+      assert_instance_of(Photograph, photo)
+    end
+  end
+
+  def test_it_can_load_artists_from_file
+    curator = Curator.new
+    curator.load_artists('./data/artists.csv')
+    expected = 6
+    actual = curator.artists.length
+    assert_equal(expected, actual)
+    curator.artists.each do |artist|
+      assert_instance_of(Artist, artist)
+    end
+  end
+
+  def test_it_can_tell_photos_taken_in_date_range
+    curator = Curator.new
+    curator.load_photographs('./data/photographs.csv')
+    curator.load_artists('./data/artists.csv')
+    expected = 2
+    actual = curator.photographs_taken_between(1950..1965).length
+    assert_equal(expected, actual)
+  end
+
+  def test_it_can_return_artists_photos_by_artist_age
+    curator = Curator.new
+    curator.load_photographs('./data/photographs.csv')
+    curator.load_artists('./data/artists.csv')
+    diane_arbus = curator.find_artist_by_id("3")
+    expected = {44=>"Identical Twins, Roselle, New Jersey", 39=>"Child with Toy Hand Grenade in Central Park"}
+    actual = curator.artists_photographs_by_age(diane_arbus)
+    assert_equal(expected, actual)
+  end
+
 end
