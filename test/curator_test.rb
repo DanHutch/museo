@@ -349,4 +349,31 @@ class CuratorTest < Minitest::Test
     assert_equal(expected, actual)
   end
 
+  def test_it_can_load_photos_from_file
+    curator = Curator.new
+    curator.load_photographs('./data/photographs.csv')
+    expected = 4
+    actual = curator.photographs.length
+    assert_equal(expected, actual)
+    curator.photographs.each do |photo|
+      assert_instance_of(Photograph, photo)
+    end
+  end
+
+  def test_it_can_load_artists_from_file
+    curator = Curator.new
+    curator.load_artists('./data/artists.csv')
+    expected = 6
+    actual = curator.artists.length
+    assert_equal(expected, actual)
+    curator.artists.each do |artist|
+      assert_instance_of(Artist, artist)
+    end
+  end
+
+  def test_it_can_tell_photos_taken_in_date_range
+
+
+  end
+
 end

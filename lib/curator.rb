@@ -1,6 +1,7 @@
+require './lib/file_io'
 require 'pry'
 
-class Curator
+class Curator #< FileIO
   attr_reader :artists,
               :photographs
 
@@ -49,6 +50,18 @@ class Curator
     photos_by_them = []
     @photographs.find_all do |photo|
       photos_by_them << photo if ids_from_there.include?(photo.artist_id)
+    end
+  end
+
+  def load_photographs(file)
+    FileIO.load_photographs(file).each do |photo|
+      add_photograph(photo)
+    end
+  end
+
+  def load_artists(file)
+    FileIO.load_artists(file).each do |artist|
+      add_artist(artist)
     end
   end
 
